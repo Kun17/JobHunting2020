@@ -56,7 +56,7 @@ func newHashTable(length int) *hashTable {
 }
 
 func calHash(val int) int {
-	return ((val * val) * 2654435761) % (2 ^ 32)
+	return val * val
 }
 
 func index(hashNum int, length int) int {
@@ -82,12 +82,12 @@ func (h *hashTable) add(key int, val int) error {
 	return nil
 }
 
-func (h *hashTable) get(key int, val int) (int, error) {
+func (h *hashTable) get(key int) (int, error) {
 	i := index(calHash(key), h.length)
 	for curNode := h.table[i].head; curNode != nil; curNode = curNode.next {
 		res, ok := curNode.data.(hashData)
 		if ok {
-			if calHash(res.key) == calHash(key) && val != res.value {
+			if calHash(res.key) == calHash(key) {
 				return res.value, nil
 			}
 		} else {
@@ -108,7 +108,7 @@ func twoSum(nums []int, target int) []int {
 	}
 	for i, num := range nums {
 		compliment := target - num
-		compIndex, err := numHashTable.get(compliment, i)
+		compIndex, err := numHashTable.get(compliment)
 		if compIndex == i || nums[compIndex] != compliment {
 			continue
 		}
