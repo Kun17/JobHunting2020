@@ -17,7 +17,7 @@ class Solution {
         int start = len / 2 - s.length - 1;
         int end = len / 2;
         int i = -1, j = -1;
-        while(end - start >= 1) {
+        while(end >= start) {
             i = start + (end - start) / 2;
             j = len / 2 - 2 - i;
             int sRight = Integer.MAX_VALUE;
@@ -29,9 +29,9 @@ class Solution {
                 sRight = s[j+1];
             }
             if(i >= 0 && l[i] > sRight) {
-                end = i;
+                end = i - 1;
             } else if(i + 1 < l.length && l[i+1] < sLeft) {
-                start = i;
+                start = i + 1;
             } else {
                 break;
             }
