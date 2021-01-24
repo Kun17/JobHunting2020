@@ -20,10 +20,8 @@ class WordDictionary {
             if(cur.children[c - 'a'] == null) {
                 cur.children[c - 'a'] = new Node();
             }
-
             cur = cur.children[c - 'a'];
         }
-
         cur.isWord = true;
     }
     
