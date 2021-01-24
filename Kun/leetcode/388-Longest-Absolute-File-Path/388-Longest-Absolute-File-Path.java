@@ -17,13 +17,12 @@ class Solution {
 
             // preorder to the deepest node
             // curLen is the length of root to current node(included), 1 is the slash. - level is to deduct tabs
-
             // This pop is the key part of this algorithm, it pops the nodes equal or deeper than current node
             while(stack.size() > level + 1) stack.pop();
-
             int curLen = s.length() - level + 1 + stack.peek();
             stack.push(curLen);
-            if (s.contains(".")) maxLen = Math.max(curLen, maxLen);
+            // cut 1 for the slash
+            if (s.contains(".")) maxLen = Math.max(curLen - 1, maxLen);
         }
         return maxLen;
     }
