@@ -3,6 +3,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Queue;
 import java.util.ArrayDeque;
+import java.util.LinkedList;
 
 /**
  * Definition for a binary tree node.
@@ -29,6 +30,7 @@ class Solution {
     // The most intuitive approach is use DAC or recursion
     // if we can pass down the x position of every layer, like left --, right ++
     public List<Integer> rightSideView(TreeNode root) {
+        if (root == null) return new ArrayList<Integer>();
         List<Node> data = findTheRightMostNode(root, 0);
         List<Integer> res = new ArrayList<>();
         for (Node n: data){
@@ -68,6 +70,48 @@ class Solution {
         return res;
     }
 
+    public List<Integer> rightSideView_two_queues(TreeNode root) {
+        if (root == null) return new ArrayList<Integer>();
+        Queue<TreeNode> curLQ = new LinkedList<>();
+        Queue<TreeNode> nextLQ = new LinkedList<>();
+        List<Integer> res = new ArrayList<>();
+        curLQ.add(root);
+        TreeNode curNode = new TreeNode();
+        while(!curLQ.isEmpty()){
+            curNode = curLQ.poll();
+            if (curNode.left != null) nextLQ.add(curNode.left);
+            if (curNode.right != null) nextLQ.add(curNode.right);
+            if (curLQ.isEmpty()){
+                res.add(curNode.val);
+                curLQ.addAll(nextLQ);
+                nextLQ.clear();
+            }
+        }
+        return res;
+    }
+
+    public List<Integer> rightSideView_sentinel(TreeNode root) {
+        if (root == null) return new ArrayList<Integer>();
+        Queue<TreeNode> q = new LinkedList<>();
+        List<Integer> res = new ArrayList<>();
+        q.add(root);
+        q.add(null);
+        TreeNode curNode = new TreeNode();
+        TreeNode preCurNode = new TreeNode();
+        while(!q.isEmpty(){
+            curNode = q.poll();
+            if (curNode == null) {
+                res.add(preCurNode.val);
+                if(!q.isEmpty()) q.add(null);
+                continue;
+            }
+            if(curNode.left != null) q.add(curNode.left);
+            if(curNode.right != null) q.add(curNode.right);
+            preCurNode = curNode;
+        }
+        return res;
+    }
+
     TreeNode constructTree(String[] vals){
         if(vals.length == 0) return null;
         int idx = 0;
@@ -98,7 +142,7 @@ class Solution {
         Solution s = new Solution();
         String[] vals = new String[]{"1","2","3","null","5","null","4"};
         TreeNode root = s.constructTree(vals);
-        List<Integer> res = s.rightSideView(root);
+        List<Integer> res = s.rightSideView_sentinel(root);
         for (Integer i: res){
             System.out.println(i);
         }
