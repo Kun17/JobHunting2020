@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.HashMap;
 
 class Solution {
-    public List<List<Integer>> pathSum(TreeNode root, int targetSum) {
+    public List<List<Integer>> pathSum_non_recursion(TreeNode root, int targetSum) {
         if (root == null) return new ArrayList<>();
         Deque<TreeNode> nodeStack = new ArrayDeque<>();
         Deque<Integer> sumStack = new ArrayDeque<>();
@@ -89,6 +89,25 @@ class Solution {
         }
     }
 
+    private void recurseTree(TreeNode root, int sum, List<Integer> pathNodes, List<List<Integer>> pathsList){
+        if(root == null) return;
+
+        pathNodes.add(root.val);
+        if(root.val == sum && root.left == null && root.right == null) {
+            pathsList.add(new ArrayList<>(pathNodes));
+        } else {
+            recurseTree(root.left ,sum - root.val, pathNodes, pathsList);
+            recurseTree(root.right ,sum - root.val, pathNodes, pathsList);
+        }
+        pathNodes.remove(pathNodes.size() - 1);
+    }
+
+    public List<List<Integer>> pathSum(TreeNode root, int sum) {
+        List<List<Integer>> pathsList = new ArrayList<List<Integer>>();
+        List<Integer> pathNodes = new ArrayList<Integer>();
+        this.recurseTree(root, sum, pathNodes, pathsList);
+        return pathsList;        
+    }
 
 
     TreeNode constructTree(String[] vals){
