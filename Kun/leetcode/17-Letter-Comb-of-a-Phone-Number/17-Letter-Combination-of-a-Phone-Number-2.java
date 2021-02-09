@@ -1,12 +1,15 @@
 import java.util.List;
 import java.util.ArrayList;
 
-class Solution {
+class Solution2 {
     public List<String> letterCombinations(String digits) {
+        return dfs(digits, 0);
+    }
+
+    List<String> dfs(String digits, int s){
+        if(s == digits.length()) return new ArrayList<>();
         List<String> res = new ArrayList<>();
-        int len = digits.length();
-        if(len == 0) return new ArrayList<>();
-        char c = digits.charAt(0);
+        char c = digits.charAt(s);
         int upperBound = 3;
         int base = (c - '2')*3;
         if(c == '9' || c == '7'){
@@ -17,7 +20,7 @@ class Solution {
         }
         for (int j = 0; j < upperBound; j++){
             char lead = (char)(base + j + 'a');
-            List<String> rests = letterCombinations(digits.substring(1, len));
+            List<String> rests = dfs(digits, s+1);
             if(rests.size() == 0) res.add(String.valueOf(lead));
             else {
                 for(String rest: rests){
@@ -30,7 +33,7 @@ class Solution {
     }
 
     public static void main(String[] Args){
-        Solution s = new Solution();
+        Solution2 s = new Solution2();
         System.out.println(s.letterCombinations("9").toString());
     }
 }
