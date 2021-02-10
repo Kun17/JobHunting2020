@@ -8,59 +8,52 @@ import java.util.Set;
 import java.util.HashSet;
 
 class Solution {
-    Map<Integer, List<Integer>> graph;
-    boolean[] checked;
-    Set<List<Integer>> criticalConns;
+    List<Integer>[] graph;
+    int[] rank;
+    Set<List<Integer>> resSet;
     public List<List<Integer>> criticalConnections(int n, List<List<Integer>> connections) {
-        this.graph = new HashMap<>();
-        this.checked = new boolean[n];
-
-        for(List<Integer> r: connections){
-            insert(r);
-        }
-
-        this.criticalConns = new HashSet<>();
+        graph = new ArrayList[n];
+        rank = new int[n];
+        resSet = new HashSet<>();
         for(int i = 0; i < n; i++){
-            boolean[] visited = new boolean[n];
-            dfs(i, -1, visited);
+            graph[i] = new ArrayList<Integer>();
+            rank[i] = -1;
         }
-        return new ArrayList<>(criticalConns);
+        for(List<Integer> con : connections){
+            graph[con.get(0)].add(con.get(1));
+            graph[con.get(1)].add(con.get(0));
+        }
+
+        dfs(0, 0);
+        return new ArrayList<>(resSet);
     }
 
-    boolean dfs(int i, int parent, boolean[] visited){
-        if(checked[i]) return false;
-        if(visited[i]) return true;
-        visited[i] = true;
-        
-        boolean isCyclic = false;
-        for(int next: graph.getOrDefault(i, new ArrayList<>())){
-            if(next != parent && !checked[next]){
-                List<Integer> l = new LinkedList<>();
-                l.add(i);
-                l.add(next);
-                System.out.println("add: "+ l.toString());
-                criticalConns.add(l);
-                if(dfs(next, i, visited)) {
-                    isCyclic = true;
-                    criticalConns.remove(l);
-                    System.out.println("remove: "+ l.toString());
-                }
+    int dfs(int curr, int parentRank){
+        int n = rank.length;
+        // This indicates this node has been visited in the current dfs
+        // Or has been checked
+        // We assign rank to n when it's visited or checked
+        if(rank[curr] != -1) return rank[curr];
+
+        int currRank = parentRank + 1;
+        rank[curr] = currRank;
+        int minRank = currRank;
+        for(int next: graph[curr]){
+            // skip it of next node is checked or it is parent, same way back
+            if(rank[next] == parentRank || rank[next] == n) continue;
+            int nextRank = dfs(next, currRank);
+            // This indicates next node is not a part of a cycle
+            // Add it to the result
+            if (nextRank > currRank) {
+                List<Integer> path = new ArrayList<>();
+                path.add(curr);
+                path.add(next);
+                resSet.add(path);
             }
+            minRank = Math.min(nextRank, minRank);
         }
-        visited[i] = false;
-        checked[i] = true;
-        return isCyclic;
-    }
-
-    void insert(List<Integer> relation){
-        int u = relation.get(0);
-        int v = relation.get(1);
-        List<Integer> uAdjs = graph.getOrDefault(u, new ArrayList<>());
-        uAdjs.add(v);
-        graph.put(u, uAdjs);
-        List<Integer> vAdjs = graph.getOrDefault(v, new ArrayList<>());
-        vAdjs.add(u);
-        graph.put(v, vAdjs);
+        rank[curr] = n;
+        return minRank;
     }
 
     List<List<Integer>> buildInput(int[][] data){
@@ -77,9 +70,9 @@ class Solution {
 
     public static void main(String[] Args){
         Solution s = new Solution();
-        int[][] data = new int[][]{{0,1},{1,2},{2,0},{1,3}};
+        int[][] data = new int[][]{{0,2},{1,2},{2,3}};
         List<List<Integer>> connections = s.buildInput(data);
-        String res = s.criticalConnections(4, connections).toString();
+        String res = s.criticalConnections(6, connections).toString();
         System.out.println(res);
     }
 }
