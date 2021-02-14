@@ -1,5 +1,3 @@
-import jdk.javadoc.internal.doclets.formats.html.resources.standard;
-
 class Solution {
     public int maxProfit(int[] prices) {
         int len = prices.length;
