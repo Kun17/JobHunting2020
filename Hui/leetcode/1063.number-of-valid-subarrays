@@ -1,0 +1,24 @@
+class Solution {
+    public int validSubarrays(int[] nums) {
+        int[] nextSmaller = new int[nums.length];
+        Stack<Integer> stk = new Stack<Integer>();
+        
+        for(int i = 0; i < nums.length; i++) {
+            while(stk.size() > 0 && nums[stk.peek()] > nums[i]) {
+                nextSmaller[stk.pop()] = i;
+            }
+            stk.push(i);
+        }
+        
+        while(stk.size() > 0) {
+            nextSmaller[stk.pop()] = nums.length;
+        }
+        
+        int ret = nums.length;
+        for(int i = 0; i < nums.length; i++) {
+            ret += (nextSmaller[i] - i - 1);
+        }
+        
+        return ret;
+    }
+}
