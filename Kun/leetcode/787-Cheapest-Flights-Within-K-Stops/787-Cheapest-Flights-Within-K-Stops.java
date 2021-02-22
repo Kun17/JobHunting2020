@@ -38,7 +38,7 @@ class Solution {
             int start = v[0];
             int steps = v[2];
             int cost = v[1];
-            if(start == dst) return distArr[dst];
+            if(start == dst) return cost;
             if(steps == K + 1) continue;
             for(int[] edge: graph.getOrDefault(v[0], new ArrayList<>())){
                 if(distArr[edge[0]] < 0 || (distArr[edge[0]] > 0 && edge[1] + cost < distArr[edge[0]])){
