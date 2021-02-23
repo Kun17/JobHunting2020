@@ -1,10 +1,11 @@
-public class Solution {
+class Solution2 {
     // you need to treat n as an unsigned value
     public int hammingWeight(int n) {
-        int mask = 1;
         int count = 0;
-        for(int i = 0; i < 32; i++){
-            if(mask & n != 0) count++;
+        while(n != 0){
+            n &= n-1;
+            count++;
         }
+        return count;
     }
 }

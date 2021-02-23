@@ -1,17 +1,13 @@
-class Solution {
+class Solution3 {
     public int[] countBits(int num) {
-        int[] res = new int[num+1];
-        for(int i = 0; i <= num; i++){
-            res[i] = hammingWeight(i);
+        int[] memo = new int[num+1];
+        int bound = 1;
+        while(bound <= num){
+            for(int i = bound; i <= 2* bound && i <= num; i++){
+                memo[i] = memo[i-bound] + 1;
+            }
+            bound <<= 1;
         }
-        return res;
-    }
-    private int hammingWeight(int n) {
-        int count = 0;
-        while(n != 0){
-            n &= n-1;
-            count++;
-        }
-        return count;
+        return memo;
     }
 }
