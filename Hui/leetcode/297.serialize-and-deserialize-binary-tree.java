@@ -47,7 +47,6 @@ public class Codec {
             return null;
         }
         int i = 1;
-        int size = 2;
         TreeNode root = new TreeNode(Integer.parseInt(str[0]));
         Queue<TreeNode> queue = new LinkedList<TreeNode>();
         queue.add(root);
