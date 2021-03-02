@@ -70,32 +70,6 @@ class Solution{
         return lps;
     }
 
-    Node constructTree(String[] vals){
-        if(vals.length == 0) return null;
-        int idx = 0;
-        Node root = new Node(Integer.valueOf(vals[idx++]));
-        Queue<Node> queue = new ArrayDeque<>();
-        int N = vals.length;
-
-        queue.add(root);
-        while(!queue.isEmpty()){
-            Node curNode = queue.poll();
-            if (idx < N && vals[idx] != "null") {
-                Node l = new Node(Integer.valueOf(vals[idx]));
-                curNode.left = l;
-                queue.add(l);
-            }
-            idx++;
-            if (idx < N && vals[idx] != "null") {
-                Node r = new Node(Integer.valueOf(vals[idx]));
-                curNode.right = r;
-                queue.add(r);
-            }
-            idx++;
-        }
-        return root;
-    }
-
     public static void main(String[] Args){
         Solution s = new Solution();
         System.out.println(s.trimString("aaabbbxyz"));
