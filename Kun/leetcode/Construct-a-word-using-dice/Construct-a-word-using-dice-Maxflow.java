@@ -88,9 +88,6 @@ class Solution2 {
         adj = new ArrayList[V];
         capacity = new int[V][V];
         diceSet = new Set[n];
-        for(int i = 0; i < V; i++){
-            Arrays.fill(capacity[i],1);
-        }
         for(int i = 0; i < n; i++){
             diceSet[i] = new HashSet<>();
             for(int j = 0; j < 6; j++){
@@ -103,14 +100,20 @@ class Solution2 {
         // Add adj to source and 1-n word node
         for(int i = 1; i <= n; i++){
             adj[0].add(i);
+            adj[i].add(0);
+            capacity[0][i] = 1;
             for(int j = n+1; j <= 2*n; j++){
                 if(diceSet[j-n-1].contains(word.charAt(i-1))){
                     adj[i].add(j);
+                    adj[j].add(i);
+                    capacity[i][j] = 1;
                 }
             }
         }
         for(int i = n+1; i <= 2*n; i++){
             adj[i].add(2*n+1);
+            adj[2*n+1].add(i);
+            capacity[i][2*n+1] = 1;
         }
     }
 
@@ -126,7 +129,7 @@ class Solution2 {
         };
         // 0 1 2 3 4
         // 1 2 3 4 5
-        String word = "helao";
+        String word = "hello";
         System.out.println(s.canConstructWord(word, dice));
         // s = new Solution2();
         // dice = new char[][]{
