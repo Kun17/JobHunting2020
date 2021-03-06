@@ -17,26 +17,28 @@ class Solution4 {
             g.computeIfAbsent(sc, l -> new ArrayList<>()).add(new int[]{dst, wt});
         }
         int[] dist = new int[n+1];
-        Arrays.fill(dist, Integer.MAX_VALUE);
+        Arrays.fill(dist, -1);
         dist[k] = 0;
         PriorityQueue<Integer> pq = new PriorityQueue<>((x,y) -> (dist[x] - dist[y]));
         pq.add(k);
         Set<Integer> visited = new HashSet<>();
         while(!pq.isEmpty()){
             int cur = pq.poll();
-            if(visited.contains(cur)) continue;
             visited.add(cur);
-            if(visited.size() == n) return dist[cur];
+            if(visited.size() == n) break;
             for(int[] next: g.getOrDefault(cur, new ArrayList<>())){
                 int dest = next[0];
                 int wt = next[1];
-                if(dist[dest] > wt + dist[cur]){
+                if((dist[dest] == -1 || dist[dest] > wt + dist[cur]) && !visited.contains(dest)){
                     dist[dest] = wt + dist[cur];
                     pq.add(dest);
                 }
             }
         }
-        return -1;
+        dist[0] = 0;
+        Arrays.sort(dist);
+        if(dist[0] == -1) return -1;
+        return dist[n];
     }
 
     public static void main(String[] Args){

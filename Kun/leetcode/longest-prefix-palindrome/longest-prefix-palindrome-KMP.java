@@ -49,7 +49,6 @@ class Solution{
         }
         return -1;
     }
-
     private int[] buildLPS(String s){
         int len = s.length();
         int[] lps = new int[len];
