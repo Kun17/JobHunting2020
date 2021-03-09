@@ -46,6 +46,28 @@ class WordDistance {
         return dist;
     }
 
+    public int shortest2(String word1, String word2) {
+        String key1 = word1 + "*" + word2, key2 = word2 + "*" + word1;
+        if(distanceMap.containsKey(key1)) return distanceMap.get(key1);
+        if(distanceMap.containsKey(key2)) return distanceMap.get(key2);
+        List<Integer> l1 = posMap.get(word1);
+        List<Integer> l2 = posMap.get(word2);
+        int len1 = l1.size(), len2 = l2.size();
+        int dist = Integer.MAX_VALUE;
+        int i = 0, j = 0;
+        while(i < len1 && j < len2){
+            dist = Math.min(dist, Math.abs(i-j));
+            if(l1.get(i) < l2.get(j)){
+                i++;
+            } else {
+                j++;
+            }
+        }
+
+        distanceMap.put(word1 + "*" + word2, dist);
+        return dist;
+    }
+
     public static void main(String[] Args){
         String[] words = new String[]{"practice","makes","perfect","coding","makes"};
         WordDistance wd = new WordDistance(words);
