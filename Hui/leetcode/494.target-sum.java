@@ -16,7 +16,7 @@ class Solution {
     }
 
     public int helper(int[] nums, int cur, int sum, int target) {
-        // if (sum > target || sum < 0) return 0;
+        if (sum > target || sum < 0) return 0;
         if (cur == nums.length) {
             if (sum == target) {
                 return 1;

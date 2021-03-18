@@ -14,16 +14,16 @@ class Solution {
         //     mul[i] = nums[i] * mul[i - 1];
         // }
 
-        int j = -1;
+        int j = 0;
         int ret = 0;
-        long tmp = 1;
+        int tmp = 1;
         for (int i = 0; i < nums.length; i++) {
             tmp *= nums[i];
 
-            while (j < i && tmp >= k) {
-                tmp = tmp / nums[++j];
+            while (j <= i && tmp >= k) {
+                tmp = tmp / nums[j++];
             }
-            ret += i - j;
+            ret += i - j + 1;
         }
 
         return ret;

@@ -16,9 +16,7 @@ class RLEIterator {
     }
     
     public int next(int n) {
-        if (index >= A.length) {
-            return -1;
-        }
+        if (index >= A.length) return -1;
         if (A[index] - count >= n) {
             count += n;
             return A[index + 1];

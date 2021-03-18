@@ -7,6 +7,65 @@
 // @lc code=start
 class Solution {
     public double[] calcEquation(List<List<String>> equations, double[] values, List<List<String>> queries) {
+        Map<String, String> parent = new HashMap<>();
+        Map<String, Double> dist = new HashMap<>();
+
+        for (int i = 0; i < equations.size(); i++) {
+            String e1 = equations.get(i).get(0);
+            String e2 = equations.get(i).get(1);
+            String root1 = find(parent, dist, e1);
+            String root2 = find(parent, dist, e2);
+
+            parent.put(root1, root2);
+            dist.put(root1, findDist(parent, dist, e2) * values[i] / findDist(parent, dist, e1));
+        }
+        // System.out.println(parent);
+        // System.out.println(dist);
+        double[] ret = new double[queries.size()];
+        for (int i = 0; i < queries.size(); i++) {
+            String e1 = queries.get(i).get(0);
+            String e2 = queries.get(i).get(1);
+            if (!parent.containsKey(e1) || !parent.containsKey(e2)) {
+                ret[i] = -1.0;
+                continue;
+            }
+            String root1 = find(parent, dist, e1);
+            String root2 = find(parent, dist, e2);
+            if (!root1.equals(root2)) {
+                ret[i] = -1.0;
+                continue;
+            }
+
+            ret[i] = findDist(parent, dist, e1) / findDist(parent, dist, e2);
+        }
+        return ret;
+        
+    }
+
+    public String find(Map<String, String> parent, Map<String, Double> dist, String target) {
+        if (!parent.containsKey(target)) {
+            parent.put(target, target);
+            dist.put(target, 1.0);
+        }
+
+        while (!parent.get(target).equals(target)) {
+            target = parent.get(target);
+        }
+        return target;
+    }
+
+    public double findDist(Map<String, String> parent, Map<String, Double> dist, String target) {
+        double ret = 1.0;
+        while (!parent.get(target).equals(target)) {
+            ret *= dist.get(target);
+            target = parent.get(target);
+        }
+                // System.out.println(target + " " + ret);
+
+        return ret;
+    }
+    /*
+    public double[] calcEquation(List<List<String>> equations, double[] values, List<List<String>> queries) {
         Map<String, Map<String, Double>> map = new HashMap<>();
 
         for (int i = 0; i < equations.size(); i++) {
@@ -47,6 +106,7 @@ class Solution {
 
         return -1.0;
     }
+    */
 }
 // @lc code=end
 

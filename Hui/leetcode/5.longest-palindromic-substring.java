@@ -7,7 +7,7 @@
 // @lc code=start
 class Solution {
     public String longestPalindrome(String s) {
-        
+        /*
         char[] c = new char[2 * s.length() + 3];
         c[0] = '$'; 
         c[c.length - 1] = '^';
@@ -41,9 +41,10 @@ class Solution {
         }
 
         return s.substring((retIndex - maxLen) / 2, (retIndex - maxLen) / 2 + maxLen);
+        */
 
-        /*
-        O(N^2) Solution
+        
+        // O(N^2) Solution
         if (s == "") return "";
         boolean[] dp = new boolean[s.length()];
         int start = 0, end = 0;
@@ -68,7 +69,7 @@ class Solution {
 
         return s.substring(start, end + 1);
 
-        */
+        
         /* Another solution
         O(n^2)
 
